@@ -1,0 +1,31 @@
+# Python byte-compiled files
+__pycache__/
+*.pyc
+
+# Django project database
+# This file changes with every migration and contains local data.
+# It should not be in version control.
+db.sqlite3
+db.sqlite3-journal
+
+# User-uploaded media files
+# These are user-specific and can grow very large.
+/media/
+
+# Virtual Environment folder
+# Each developer should create their own environment.
+venv/
+env/
+.venv/
+
+# Environment variables
+# Contains sensitive keys and local configurations.
+.env
+
+# IDE and editor configuration
+.vscode/
+.idea/
+
+# Operating System files
+.DS_Store
+Thumbs.db

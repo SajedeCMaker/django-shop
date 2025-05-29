@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-9">
+            <div class="card flex-row mx-auto border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="col-md-7 p-5">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4 fw-bold">ایجاد حساب جدید</h3>
+                        <form method="POST" action="{% url 'signup' %}" novalidate>
+                            {% csrf_token %}
+                            
+                            {% for field in form %}
+                                <div class="form-floating mb-3">
+                                    {{ field }}
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    {% if field.errors %}
+                                        <div class="form-text text-danger">
+                                            {{ field.errors|striptags }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+
+                            <div class="d-grid mt-4">
+                                <button type="submit" class="btn btn-success btn-lg fw-bold">ثبت‌نام</button>
+                            </div>
+                             <hr class="my-4">
+                             <p class="text-center">قبلاً ثبت‌نام کرده‌اید؟ <a href="{% url 'login' %}" class="text-decoration-none"> وارد شوید</a></p>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-5 d-none d-md-block">
+                     <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&auto=format&fit=crop" class="img-fluid h-100" alt="Signup Image" style="object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
