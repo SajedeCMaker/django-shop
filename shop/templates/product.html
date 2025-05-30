@@ -20,14 +20,19 @@
             {% endif %}
             
             <p class="text-muted mt-3">{{ product.description|linebreaks }}</p>
+            
 
-            <div class="d-flex align-items-center mt-4">
-                <input type="number" class="form-control text-center me-3" value="1" min="1" style="max-width: 5rem">
-                <button class="btn btn-primary btn-lg flex-shrink-0" type="button">
-                    <i class="bi-cart-fill me-1"></i>
-                    افزودن به سبد خرید
-                </button>
-            </div>
+            <form method="POST" action="{% url 'cart:add_to_cart' product.id %}">
+                {% csrf_token %}
+                <div class="d-flex align-items-center mt-4">
+                    <input type="number" class="form-control text-center me-3" name="quantity" value="1" min="1" ...>
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <button class="btn btn-primary btn-lg flex-shrink-0" type="submit">
+                        <i class="bi-cart-fill me-1"></i>
+                        افزودن به سبد خرید
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 

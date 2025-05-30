@@ -30,11 +30,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shop',
+    'cart',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware', # Session middleware is crucial for anonymous carts
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -57,6 +58,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.cart_context', # Add your cart context processor here
             ],
         },
     },
@@ -98,9 +100,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'fa-ir' # Changed to Persian (Iran) as per your templates
+TIME_ZONE = 'Asia/Tehran' # Changed to Tehran timezone
 
 USE_I18N = True
 
@@ -121,3 +122,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Ensure sessions are working correctly
+SESSION_ENGINE = 'django.contrib.sessions.backends.db' # Using database-backed sessions
+SESSION_COOKIE_AGE = 1209600 # 2 weeks, like your remember_me
+SESSION_SAVE_EVERY_REQUEST = True # Important for anonymous carts

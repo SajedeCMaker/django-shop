@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %} {% block content %}
+
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">سبد خرید شما</h1>
+            <p class="lead fw-normal text-white-50 mb-0">محصولاتی که انتخاب کرده‌اید را بررسی کنید.</p>
+        </div>
+    </div>
+</header>
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5">
+        {% if cart_items %}
+            <div class="row gx-4 gx-lg-5">
+                <div class="col-lg-8">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width: 15%;">محصول</th>
+                                    <th scope="col" style="width: 35%;"></th>
+                                    <th scope="col" class="text-center">قیمت واحد</th>
+                                    <th scope="col" class="text-center" style="width: 15%;">تعداد</th>
+                                    <th scope="col" class="text-center">قیمت کل</th>
+                                    <th scope="col" class="text-center">حذف</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cart_items %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'product' item.product.id %}">
+                                            <img src="{{ item.product.picture.url }}" alt="{{ item.product.name }}" class="img-fluid rounded" style="max-height: 70px; object-fit: cover;">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'product' item.product.id %}" class="text-decoration-none text-dark fw-bold">{{ item.product.name }}</a>
+                                        <small class="d-block text-muted">دسته: {{ item.product.category.name }}</small>
+                                    </td>
+                                    <td class="text-center">
+                                        {% if item.product.is_sale %}
+                                            {{ item.product.sale_price|floatformat:"0" }} تومان
+                                        {% else %}
+                                            {{ item.product.price|floatformat:"0" }} تومان
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center">
+                                        <form method="POST" action="{% url 'cart:update_cart' %}" class="d-inline-flex align-items-center justify-content-center">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="item_pk" value="{{ item.pk }}">
+                                            <input type="number" name="quantity" value="{{ item.quantity }}" min="0" class="form-control form-control-sm text-center" style="width: 70px;" onchange="this.form.submit()">
+                                            <!-- <button type="submit" class="btn btn-sm btn-outline-secondary ms-1" title="به‌روزرسانی تعداد">
+                                                <i class="bi bi-arrow-repeat"></i>
+                                            </button> -->
+                                        </form>
+                                    </td>
+                                    <td class="text-center fw-bold">{{ item.get_total_price|floatformat:"0" }} تومان</td>
+                                    <td class="text-center">
+                                        <form method="POST" action="{% url 'cart:remove_from_cart' item.pk %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="حذف از سبد">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-body p-4">
+                            <h4 class="card-title fw-bold mb-4">خلاصه سفارش</h4>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    جمع کل محصولات ({{ cart_items_count }} عدد)
+                                    <span>{{ current_cart.get_total_price|floatformat:"0" }} تومان</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    هزینه ارسال
+                                    <span class="text-success">رایگان</span> </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center fw-bold border-top pt-3 px-0">
+                                    مبلغ قابل پرداخت
+                                    <span>{{ current_cart.get_total_price|floatformat:"0" }} تومان</span>
+                                </li>
+                            </ul>
+                            <div class="d-grid gap-2 mt-4">
+                                <a href="#" class="btn btn-primary btn-lg fw-bold">ادامه فرآیند خرید</a>
+                                <a href="{% url 'shop' %}" class="btn btn-outline-secondary">بازگشت به فروشگاه</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-cart-x-fill display-1 text-muted mb-3"></i>
+                <h3 class="fw-bold">سبد خرید شما خالی است!</h3>
+                <p class="text-muted">به نظر می‌رسد هنوز هیچ محصولی به سبد خرید خود اضافه نکرده‌اید.</p>
+                <a href="{% url 'shop' %}" class="btn btn-primary btn-lg mt-3">
+                    <i class="bi bi-arrow-left-circle-fill me-2"></i>
+                    بازگشت به فروشگاه و انتخاب محصولات
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

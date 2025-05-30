@@ -21,20 +21,19 @@
                 {% endif %}
                 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">خرید</a>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">محصولات</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">همه محصولات</a></li>
-                        <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="#!">محصولات پربازدید</a></li>
-                        <li><a class="dropdown-item" href="#!">محصولات جدید</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">محصولات پرفروش</a></li>
                     </ul>
                 </li>
             </ul>
             
-            <a href="#" class="btn btn-outline-dark">
+            <a href="{% url 'cart:view_cart'%}" class="btn btn-outline-dark">
                 <i class="bi-cart-fill me-1"></i>
                 سبد خرید
-                <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                <span class="badge bg-dark text-white ms-1 rounded-pill">{{ cart_items_count }}</span>
             </a>
         </div>
     </div>
